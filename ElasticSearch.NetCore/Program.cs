@@ -1,7 +1,16 @@
+using Elastic.Clients.Elasticsearch;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton(provider =>
+{
+    var settings = new ElasticsearchClientSettings(new Uri("http://localhost:9200"))
+        .DefaultIndex("books");
+    return new ElasticsearchClient(settings);
+});
 
 var app = builder.Build();
 
