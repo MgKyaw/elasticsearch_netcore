@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Elastic.Clients.ElasticSearch" Version="8.17.0" />
+  </ItemGroup>
+
 </Project>
