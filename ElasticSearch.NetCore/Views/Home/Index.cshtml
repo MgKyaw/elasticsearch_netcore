@@ -1,8 +1,25 @@
-﻿@{
+﻿@model Elastic.Clients.Elasticsearch.SearchResponse<Book>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
+<form asp-controller="Home" asp-action="Index" method="post">
+    <input type="text" name="query" />
+    <input type="=submit" value="Search" />
+</form>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Getting Started with Elasticsearch</h1>
 </div>
+
+@if (Model.Documents.Any())
+{
+    <h3>Search Results</h3>
+    <ul>
+    @foreach (var book in Model.Documents)
+    {
+        <li>Title:asp-action @book.Title (ISBN:asp-action @book.Isbn)</li>
+    }
+    </ul>
+}
