@@ -13,13 +13,13 @@
     <h1 class="display-4">Getting Started with Elasticsearch</h1>
 </div>
 
-@if (Model.Documents.Any())
+@if (Model.Hits.Any())
 {
     <h3>Search Results</h3>
     <ul>
-    @foreach (var book in Model.Documents)
+    @foreach (var hit in Model.Hits)
     {
-        <li>Title:asp-action @book.Title (ISBN:asp-action @book.Isbn)</li>
+        <li>Title:asp-action @hit.Source?.Title (ISBN:asp-action @hit.Source?.Isbn)</li>
     }
     </ul>
 }
