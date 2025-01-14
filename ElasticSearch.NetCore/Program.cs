@@ -1,4 +1,5 @@
 using Elastic.Clients.Elasticsearch;
+using Elastic.Transport;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton(provider =>
 {
     var settings = new ElasticsearchClientSettings(new Uri("http://localhost:9200"))
+        .Authentication(new BasicAuthentication("elastic", "password"))
+        // .CertificateFingerprintValidationEnabled(false)
         .DefaultIndex("books");
     return new ElasticsearchClient(settings);
 });
