@@ -16,12 +16,29 @@ public class HomeController : Controller
         _elasticsearchClient = elasticsearchClient;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string query)
     {
-        var searchResponse = await _elasticsearchClient.SearchAsync<Book>(s => s
-            .Index("books")
-            .Query(q => q.MatchAll(new Elastic.Clients.Elasticsearch.QueryDsl.MatchAllQuery()))
-        );
+        SearchResponse<Book> searchResponse;
+
+        if (!string.IsNullOrEmpty(query))
+        {
+            searchResponse = await _elasticsearchClient.SearchAsync<Book>(s => s
+                .Index("books")
+                .Query(q => q
+                    .Match(b => b
+                        .Field(f => f.Title)
+                        .Query(query)
+                    )
+                )
+            );
+        }
+        else
+        {
+            searchResponse = await _elasticsearchClient.SearchAsync<Book>(s => s
+                .Index("books")
+                .Query(q => q.MatchAll(new Elastic.Clients.Elasticsearch.QueryDsl.MatchAllQuery()))
+            );
+        }
 
         if (searchResponse.IsValidResponse)
         {
