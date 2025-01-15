@@ -22,12 +22,21 @@ public class HomeController : Controller
 
         if (!string.IsNullOrEmpty(query))
         {
+            //searchResponse = await _elasticsearchClient.SearchAsync<Book>(s => s
+            //    .Index("books")
+            //    .Query(q => q
+            //        .Match(b => b
+            //            .Field(f => f.Title)
+            //            .Query(query)
+            //        )
+            //    )
+            //); 
             searchResponse = await _elasticsearchClient.SearchAsync<Book>(s => s
                 .Index("books")
                 .Query(q => q
-                    .Match(b => b
-                        .Field(f => f.Title)
-                        .Query(query)
+                    .Term(b => b
+                        .Field(f => f.Isbn)
+                        .Value(query)
                     )
                 )
             );
