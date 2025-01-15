@@ -19,7 +19,7 @@
     <ul>
     @foreach (var hit in Model.Hits)
     {
-        <li>Title:asp-action @hit.Source?.Title (ISBN:asp-action @hit.Source?.Isbn)</li>
+        <li>Title: @hit.Source?.Title (ISBN: @hit.Source?.Isbn)</li>
     }
     </ul>
 }
