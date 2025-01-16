@@ -63,6 +63,10 @@ public class HomeController : Controller
                             })
                         )
                     )
+                    .Add("categories", aggregation => aggregation
+                        .Terms(term => term
+                            .Field(f => f.Status))
+                    )
                 )
             );
         }
