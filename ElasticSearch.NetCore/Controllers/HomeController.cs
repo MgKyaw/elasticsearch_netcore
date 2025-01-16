@@ -1,4 +1,5 @@
 using Elastic.Clients.Elasticsearch;
+using Elastic.Clients.Elasticsearch.Aggregations;
 using ElasticSearch.NetCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -47,17 +48,32 @@ public class HomeController : Controller
         {
             searchResponse = await _elasticsearchClient.SearchAsync<Book>(s => s
                 .Index("books")
-                .Query(q => q.MatchAll(new Elastic.Clients.Elasticsearch.QueryDsl.MatchAllQuery()))
+                .Query(q => q
+                    .MatchAll(_ => { }))
+                .Aggregations(a => a
+                    .Add("pageCounts", aggregation => aggregation
+                        .Range(range => range
+                            .Field(x => x.PageCount)
+                            .Ranges(new[]
+                            {
+                                new AggregationRange { From = 0 },
+                                new AggregationRange { From = 200, To = 400 },
+                                new AggregationRange { From = 400, To = 600 },
+                                new AggregationRange { From = 600 }
+                            })
+                        )
+                    )
+                )
             );
         }
 
         if (searchResponse.IsValidResponse)
         {
-            System.Console.WriteLine("Found.");
+            Console.WriteLine("Found.");
         }
         else
         {
-            System.Console.WriteLine("Not Found.");
+            Console.WriteLine("Not Found.");
         }
         return View(searchResponse);
     }
