@@ -23,3 +23,24 @@
     }
     </ul>
 }
+
+@if (Model.Aggregations != null)
+{
+    <h3>Aggregations</h3>
+    @if (Model.Aggregations.ContainsKey("pageCounts"))
+    {
+        <h4>PageCounts (Range)</h4>
+        var pageCountsAggregation = Model.Aggregations.GetRange("pageCounts");
+        if (pageCountsAggregation != null)
+        {
+            foreach (var bucket in pageCountsAggregation.Buckets)
+            {
+                <li>@bucket.Key: @bucket.DocCount</li>
+            }
+        }
+        else
+        {
+            <li>No range aggregation results found.</li>
+        }
+    }
+}
