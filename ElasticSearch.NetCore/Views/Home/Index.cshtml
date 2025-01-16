@@ -43,4 +43,21 @@
             <li>No range aggregation results found.</li>
         }
     }
+
+    @if (Model.Aggregations.ContainsKey("categories"))
+    {
+        <h4>Categories (Terms)</h4>
+        var categoriesAggregation = Model.Aggregations.GetRange("categories");
+        if (categoriesAggregation != null)
+        {
+            foreach (var bucket in categoriesAggregation.Buckets)
+            {
+                <li>@bucket.Key: @bucket.DocCount</li>
+            }
+        }
+        else
+        {
+            <li>No range aggregation results found.</li>
+        }
+    }
 }
